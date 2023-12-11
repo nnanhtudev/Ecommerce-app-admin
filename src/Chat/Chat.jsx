@@ -4,7 +4,7 @@ import ChatRoomsAPI from "../API/ChatRoomsAPI";
 import "./Chat.css";
 
 import io from "socket.io-client";
-const socket = io("http://localhost:5000", { transports: ["websocket"] });
+const socket = io("http://localhost:5000/chat", { transports: ["websocket"] });
 
 function Chat(props) {
   const [allRoom, setAllRoom] = useState([]);
@@ -20,7 +20,7 @@ function Chat(props) {
   useEffect(() => {
     const fetchData = async () => {
       const result = await ChatRoomsAPI.getAllRoom();
-      setAllRoom(result);
+      setAllRoom(result.DT);
     };
     fetchData();
   }, []);
@@ -32,7 +32,7 @@ function Chat(props) {
     if (roomId) {
       const fetchData = async () => {
         const result = await ChatRoomsAPI.getMessageByRoomId(roomId);
-        setMessage(result.content || []);
+        setMessage(result.DT || []);
       };
       fetchData();
     }
@@ -44,7 +44,7 @@ function Chat(props) {
     if (load) {
       const fetchData = async () => {
         const result = await ChatRoomsAPI.getMessageByRoomId(roomId);
-        setMessage(result.content || []);
+        setMessage(result.DT || []);
       };
       fetchData();
 
@@ -157,14 +157,14 @@ function Chat(props) {
                       {message &&
                         message.map((value) =>
                           value.is_admin ? (
-                            <li className="chat-item odd list-style-none mt-3" key={value.id}>
+                            <li className="chat-item odd list-style-none mt-3" key={value._id}>
                               <div className="chat-content text-right d-inline-block pl-3">
-                                <div className="box msg p-2 d-inline-block mb-1">You: {value.message}</div>
+                                <div className="box msg p-2 d-inline-block mb-1">You: {value.content}</div>
                                 <br />
                               </div>
                             </li>
                           ) : (
-                            <li className="chat-item list-style-none mt-3" key={value.id}>
+                            <li className="chat-item list-style-none mt-3" key={value._id}>
                               <div className="chat-img d-inline-block">
                                 <img
                                   src="https://img.icons8.com/color/36/000000/administrator-male.png"
@@ -175,7 +175,7 @@ function Chat(props) {
                               </div>
                               <div className="chat-content d-inline-block pl-3">
                                 <h6 className="font-weight-medium">{value.name}</h6>
-                                <div className="msg p-2 d-inline-block mb-1">Client: {value.message}</div>
+                                <div className="msg p-2 d-inline-block mb-1">Client: {value.content}</div>
                               </div>
                               <div className="chat-time d-block font-10 mt-1 mr-0 mb-3"></div>
                             </li>
