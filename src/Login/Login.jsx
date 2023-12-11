@@ -4,11 +4,15 @@ import UserAPI from "../API/UserAPI";
 import { AuthContext } from "../Context/AuthContext";
 
 import "./Login.css";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import { UserContext } from "../Context/UserContext";
 
 const Login = () => {
+  let history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState([]);
+  const { loginContext } = useContext(UserContext);
   const { loading, error, dispatch } = useContext(AuthContext);
   // const navigate = useNavigate();
 
@@ -27,9 +31,24 @@ const Login = () => {
       email,
       password,
     };
-    let res = await UserAPI.postSignIn(data);
-    if (res && res.EC === 0) {
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.DT });
+    let response = await UserAPI.postSignIn(data);
+    if (response && response.EC === 0) {
+      let roleUser = response.DT.roleUser;
+      let id = response.DT.id;
+      let fullName = response.DT.fullName;
+      let token = response.DT.access_token;
+      let data = {
+        isAuthenticated: true,
+        token,
+        account: { roleUser, id, fullName },
+      };
+      toast.success(response.EM);
+      loginContext(data);
+      dispatch({ type: "LOGIN_SUCCESS", payload: response.DT });
+      history.push("/");
+    }
+    if (response && response.EC === -2) {
+      window.location.href = "http://localhost:3000/"; // Redirect to the client-side application
     }
     // const findUser = user.find((value) => {
     //   return value.email === email;

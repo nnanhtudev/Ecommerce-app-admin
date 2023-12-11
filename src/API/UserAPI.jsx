@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const UserAPI = {
   getAllData: () => {
-    const url = "/users/read";
+    const url = "admin/users/read";
     return axiosClient.get(url);
   },
 
@@ -17,8 +17,18 @@ const UserAPI = {
   },
 
   postSignIn: (data) => {
-    const url = `/users/login`;
+    const url = `admin/users/login`;
     return axiosClient.post(url, { data });
+  },
+
+  getAccount: () => {
+    const url = `client/user/account`;
+    return axiosClient.get(url);
+  },
+
+  postLogout: () => {
+    const url = `client/user/logout`;
+    return axiosClient.post(url);
   },
 };
 

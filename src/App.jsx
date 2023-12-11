@@ -1,42 +1,59 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Chat from "./Chat/Chat";
+import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header/Header";
-import History from "./History/History";
-import Home from "./Home/Home";
-import Menu from "./Menu/Menu";
-import Products from "./Products/Products";
-import Users from "./Users/Users";
-import Login from "./Login/Login";
-import NewProduct from "./New/NewProduct";
-import { AuthContextProvider } from "./Context/AuthContext";
 
+import Menu from "./Menu/Menu";
+import { AuthContext, AuthContextProvider } from "./Context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useContext, useEffect, useState } from "react";
+import AppRoutes from "./routes/AppRoutes";
+import { UserContext } from "./Context/UserContext";
+import { InfinitySpin } from "react-loader-spinner";
 function App() {
+  const { user } = useContext(UserContext);
   return (
     <div className="App">
       <AuthContextProvider>
         <BrowserRouter>
-          <div
-            id="main-wrapper"
-            data-theme="light"
-            data-layout="vertical"
-            data-navbarbg="skin6"
-            data-sidebartype="full"
-            data-sidebar-position="fixed"
-            data-header-position="fixed"
-            data-boxed-layout="full"
-          >
-            <Header />
-            <Menu />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/chat" component={Chat} />
-              <Route path="/users" component={Users} />
-              <Route path="/products" component={Products} />
-              <Route path="/history" component={History} />
-              <Route path="/login" component={Login} />
-              <Route path="/new" component={NewProduct} />
-            </Switch>
-          </div>
+          <>
+            <div
+              id="main-wrapper"
+              data-theme="light"
+              data-layout="vertical"
+              data-navbarbg="skin6"
+              data-sidebartype="full"
+              data-sidebar-position="fixed"
+              data-header-position="fixed"
+              data-boxed-layout="full"
+            >
+              <Header />
+              <Menu />
+              {user && user.isLoading ? (
+                <>
+                  <div className="loading-container">
+                    <InfinitySpin width="200" color="#4fa94d" />
+                    <div>Loading data ...</div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <AppRoutes />
+                </>
+              )}
+            </div>
+          </>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
         </BrowserRouter>
       </AuthContextProvider>
     </div>

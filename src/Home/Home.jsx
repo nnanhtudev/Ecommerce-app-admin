@@ -226,7 +226,7 @@ function Home(props) {
                         <th>Detail</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    {/* <tbody>
                       {history &&
                         history.map((value) => (
                           <tr key={value._id}>
@@ -250,7 +250,7 @@ function Home(props) {
                             </td>
                           </tr>
                         ))}
-                    </tbody>
+                    </tbody> */}
                   </table>
                 </div>
               </div>
