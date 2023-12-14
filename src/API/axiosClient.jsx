@@ -6,7 +6,7 @@ import config from "../config/index";
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#requestconfig` for the full list of configs
 const axiosClient = axios.create({
-  baseURL: config.URL_SERVER,
+  baseURL: "https://server-ecommerce-kl7p.onrender.com/api/v1",
   headers: {
     "content-type": "application/json",
   },

@@ -10,7 +10,7 @@ import config from "../config/index";
 import "./Home.css";
 import { toast } from "react-toastify";
 Home.propTypes = {};
-const socket = io(`${config.URL_SERVER_SOCKET}/checkout`, { transports: ["websocket"] });
+const socket = io("https://server-ecommerce-kl7p.onrender.com/checkout", { transports: ["websocket"] });
 function Home(props) {
   const [history, setHistory] = useState([]);
   const [dashboard, setDashboard] = useState({

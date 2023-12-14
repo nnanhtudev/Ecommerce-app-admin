@@ -5,7 +5,7 @@ import ChatRoomsAPI from "../API/ChatRoomsAPI";
 import "./Chat.css";
 import config from "../config/index";
 import io from "socket.io-client";
-const socket = io(`${config.URL_SERVER_SOCKET}/chat`, { transports: ["websocket"] });
+const socket = io("https://server-ecommerce-kl7p.onrender.com/chat", { transports: ["websocket"] });
 
 function Chat(props) {
   console.log(`${config.URL_SERVER_SOCKET}/chat`);
