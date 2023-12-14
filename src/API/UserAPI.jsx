@@ -30,6 +30,11 @@ const UserAPI = {
     const url = `client/user/logout`;
     return axiosClient.post(url);
   },
+
+  getDashBoard: () => {
+    const url = `admin/users/dashboard`;
+    return axiosClient.get(url);
+  },
 };
 
 export default UserAPI;

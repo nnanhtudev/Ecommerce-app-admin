@@ -1,12 +1,14 @@
+//Chat Admin
 import React, { useEffect, useState } from "react";
 import UserAPI from "../API/UserAPI";
 import ChatRoomsAPI from "../API/ChatRoomsAPI";
 import "./Chat.css";
-
+import config from "../config/index";
 import io from "socket.io-client";
-const socket = io("http://localhost:5000/chat", { transports: ["websocket"] });
+const socket = io(`${config.URL_SERVER_SOCKET}/chat`, { transports: ["websocket"] });
 
 function Chat(props) {
+  console.log(`${config.URL_SERVER_SOCKET}/chat`);
   const [allRoom, setAllRoom] = useState([]);
   const [roomId, setRoomId] = useState("");
   const [message, setMessage] = useState([]);
@@ -23,6 +25,7 @@ function Chat(props) {
       setAllRoom(result.DT);
     };
     fetchData();
+    console.log(socket);
   }, []);
 
   // Hàm này dùng để load dữ liệu message và nó sẽ chạy lại khi state id_user2 thay đổi
@@ -79,10 +82,8 @@ function Chat(props) {
     postData();
     setTextMessage("");
 
-    setTimeout(() => {
-      socket.emit("send_message", data);
-      setLoad(true);
-    }, 200);
+    socket.emit("send_message", data);
+    setLoad(true);
   };
   const handleRoomChange = (roomId) => {
     setRoomId(roomId);
